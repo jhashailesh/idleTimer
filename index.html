@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <span id="timeLeft"></span>
+  <br>
+  <span id="userStatus"></span>
+
+  <script src="script.js"></script>
+  <script>
+    const idleTime = new IdleTimer({
+      timeout : 30,
+      callback: (refresh, logOut) => {console.log("::---> callBack called <---::", refresh, logOut)},
+      intervalTime: 3,
+      refreshAfter: 28
+    });
+
+    const timeLeft = document.getElementById("timeLeft");
+    const userStatus = document.getElementById("userStatus");
+    idleTime._br.onmessage = ev => {
+      timeLeft.innerText = "Time remaining :: " + ev.data.timeRemaining;
+      userStatus.innerText = "user is :: " + ev.data.userState;
+      console.log('@event', ev.data);
+    }
+
+    console.log("from main page", idleTime.getRemainingTimeInSeconds());
+  </script>
+</body>
+</html>
